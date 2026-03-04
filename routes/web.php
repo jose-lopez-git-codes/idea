@@ -1,5 +1,18 @@
 <?php
 
+use App\Http\Controllers\RegisteredUserController;
+use App\Http\Controllers\SessionsController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn () => view('welcome'));
+
+Route::middleware('guest')->group(function () {
+    Route::get('/register', [RegisteredUserController::class, 'create'])->name('register.create');
+    Route::post('/register', [RegisteredUserController::class, 'store'])->name('register.store');
+    Route::get('/login', [SessionsController::class, 'create'])->name('login.create');
+    Route::post('/login', [SessionsController::class, 'store'])->name('login.store');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::post('/logout', [SessionsController::class, 'destroy'])->name('logout');
+});
