@@ -1,4 +1,4 @@
-<?php
+ <?php
 
 use App\Models\Idea;
 use App\Models\User;
@@ -15,4 +15,9 @@ test('it can have steps', function () {
         'description' => 'Do the thing',
     ]);
     expect($idea->fresh()->steps)->toHaveCount(1);
+});
+
+test('it can format description using Markdown', function () {
+    $idea = new Idea(['description' => 'Do the *thing*']);
+    expect($idea->formattedDescription)->toEqual("<p>Do the <em>thing</em></p>\n");
 });
